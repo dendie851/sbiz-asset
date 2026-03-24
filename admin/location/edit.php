@@ -1,0 +1,50 @@
+<?php ob_start(); ?>
+	<?php include 'editRead.php' ?>
+	
+	<h1>EDIT LOKASI</h1>
+	<hr />
+	<form action="editSave.php" method="post" enctype="multipart/form-data">
+		<input name="id" type="hidden" value="<?php echo $data['id'] ?>" />			
+		<input name="level" type="hidden" value="<?php echo $_REQUEST['level'] ?>"/>			
+		<input name="parentId" type="hidden" value="<?php echo $_REQUEST['parentId'] ?>"/>			
+
+		<table width="100%">
+			<tr>
+				<td valign="top" width="10%">NAMA</td>
+				<td>
+					<input name="name" type="text" value="<?php echo isset($_POST['name']) ? $_POST['name'] : $data['name'] ?>"/>			
+					<div style="color:red"><?php echo isset($msgError['name']) ? $msgError['name'] : '' ?></div>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">ALIAS</td>
+				<td>
+					<input name="aliasa" type="text" value="<?php echo isset($_POST['aliasa']) ? $_POST['aliasa'] : $data['alias'] ?>"/>			
+					<div style="color:red"><?php echo isset($msgError['aliasa']) ? $msgError['aliasa'] : '' ?></div>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">LUAS</td>
+				<td>
+					<input name="size" type="text" value="<?php echo isset($_POST['size']) ? $_POST['size'] : $data['size'] ?>"/>			
+					<div style="color:red"><?php echo isset($msgError['size']) ? $msgError['size'] : '' ?></div>
+				</td>
+			</tr>	
+			<tr>
+				<td valign="top">STATUS</td>
+				<td>
+					<select name="status" style="width:210px">
+						<option value="0" <?php echo (isset($_REQUEST['status']) ? $_REQUEST['status'] : $data['status']) == '0' ? 'selected' : '' ?>>TIDAK DI GUNAKAN</option>
+						<option value="1" <?php echo (isset($_REQUEST['status']) ? $_REQUEST['status'] : $data['status']) == '1' ? 'selected' : '' ?>>DI GUNAKAN</option>
+					</select>			
+				</td>
+			</tr>			
+		</table>
+		<hr />
+		<input type="submit" value="SIMPAN"/>
+		<input type="button" value="BATAL" onclick="window.location='index.php?positionLevel=<?php echo $_REQUEST['positionLevel'] ?>&positionParentId=<?php echo $_REQUEST['positionParentId']?>'" />	
+	</form>
+<?php $templateContent = ob_get_contents(); ?>
+<?php ob_end_clean(); ?>
+
+<?php include '../template/main.php' ?>
