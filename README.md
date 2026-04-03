@@ -9,10 +9,11 @@ Managing physical assets is a critical challenge for growing businesses. Without
 
 ## Table of Contents
 *   [Introduction](#introduction)
-*   [📄 License](#-license)
+*   [License](#-license)
 *   [1. Business Purpose and Benefits](#1-business-purpose-and-benefits)
 *   [2. Application Flow](#2-application-flow)
 *   [3. Installation with Docker](#3-installation-with-docker)
+    *   [System Requirements](#system-requirements)
 *   [4. User Management](#4-user-management)
     *   [Member List UI](#member-list-ui)
     *   [Adding New Members](#adding-new-members)
@@ -88,8 +89,17 @@ graph TD
 
 Follow these steps to run the application instantly using Docker.
 
-### Prerequisites
-*   Docker & Docker Compose installed.
+### System Requirements
+
+#### 💻 Hardware (Minimum)
+*   **Processor**: 2.0 GHz Dual Core or better.
+*   **Memory (RAM)**: 4 GB minimum (8 GB recommended if using Docker Desktop on Windows/Mac).
+*   **Storage**: 5GB MB of free disk space (excluding database growth).
+
+#### 🛠 Software Dependencies
+*   **Operating System**: Windows, Linux, or macOS.
+*   **Docker**: Docker Engine or Docker Desktop installed.
+*   **Web Browser**: Modern browsers with JavaScript enabled (Chrome, Edge, Firefox, or Safari).
 
 ### Included Files
 The project already contains the necessary Docker files:
