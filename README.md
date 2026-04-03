@@ -94,7 +94,7 @@ Follow these steps to run the application instantly using Docker.
 #### 💻 Hardware (Minimum)
 *   **Processor**: 2.0 GHz Dual Core or better.
 *   **Memory (RAM)**: 4 GB minimum (8 GB recommended if using Docker Desktop on Windows/Mac).
-*   **Storage**: 5GB MB of free disk space (excluding database growth).
+*   **Storage**: 5 GB of free disk space (excluding database growth).
 
 #### 🛠 Software Dependencies
 *   **Operating System**: Windows, Linux, or macOS.
@@ -125,6 +125,9 @@ Before running the system, choose how you want to initialize the database in `do
     docker-compose up -d
     ```
 3.  Access the app at: `http://localhost:8080`
+4.  **Default Credentials**:
+    *   **Username**: `admin`
+    *   **Password**: `1234`
 
 ### Step 3: Database Verification
 The application uses the credentials defined in [docker-compose.yml](file:///d:/mygithub-research/opensource-product/sbiz-asset/docker-compose.yml). 
