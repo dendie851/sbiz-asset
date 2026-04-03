@@ -1,5 +1,12 @@
 # Simple Small Business Asset (Sbiz-Asset)
 
+## Introduction
+
+Managing physical assets is a critical challenge for growing businesses. Without a proper system, tracking furniture, electronics, and specialized equipment often leads to data loss, missing items, and inaccurate financial records. 
+
+**Simple Small Business Asset (Sbiz-Asset)** is an **Open Source** initiative and a comprehensive management solution. It is designed to help organizations move away from manual spreadsheets and towards a professional process that prevents asset loss and eliminates wasteful duplicate spending. Open for anyone to use, modify, and develop, the system is available for free under the MIT License to support better asset governance worldwide.
+
+
 ## Table of Contents
 *   [Introduction](#introduction)
 *   [📄 License](#-license)
@@ -34,13 +41,8 @@
         *   [Section D: Physical Condition Audits (PDF/Excel)](#section-d-physical-condition-audits-pdfexcel)
         *   [Section E: Master Activity & Audit Log Reports (PDF/Excel)](#section-e-master-activity--audit-log-reports-pdfexcel)
 
-## Introduction
 
-Managing physical assets is a critical challenge for growing businesses. Without a proper system, tracking furniture, electronics, and specialized equipment often leads to data loss, missing items, and inaccurate financial records. 
-
-**Simple Small Business Asset (Sbiz-Asset)** is an **Open Source** initiative and a comprehensive management solution. It is designed to help organizations move away from manual spreadsheets and towards a professional process that prevents asset loss and eliminates wasteful duplicate spending. Open for anyone to use, modify, and develop, the system is available for free under the MIT License to support better asset governance worldwide.
-
-## 📄 License
+## License
 
 This project is licensed under the **MIT License**. You are free to use, modify, and distribute this software for personal or commercial purposes. See the [LICENSE](file:///d:/mygithub-research/opensource-product/sbiz-asset/LICENSE) file for more details.
 
