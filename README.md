@@ -1,6 +1,18 @@
 # Simple Small Business Asset (Sbiz-Asset)
 
-A lightweight asset management system designed for small and medium-sized businesses to manage inventory, track asset lifecycles, and handle financial depreciation.
+## Introduction
+
+Managing physical assets is a critical challenge for growing businesses. Without a proper system, tracking furniture, electronics, and specialized equipment often leads to data loss, missing items, and inaccurate financial records. 
+
+**Simple Small Business Asset (Sbiz-Asset)** is an **Open Source** initiative and a comprehensive management solution. It is designed to help organizations move away from manual spreadsheets and towards a professional process that prevents asset loss and eliminates wasteful duplicate spending. Open for anyone to use, modify, and develop, the system is available for free under the MIT License to support better asset governance worldwide.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. You are free to use, modify, and distribute this software for personal or commercial purposes. See the [LICENSE](file:///d:/mygithub-research/opensource-product/sbiz-asset/LICENSE) file for more details.
+
+---
 
 ## 1. Business Purpose and Benefits
 
@@ -8,37 +20,41 @@ A lightweight asset management system designed for small and medium-sized busine
 
 *   **Financial Clarity**: Track asset values, acquisition costs, and current net values after depreciation.
 *   **Asset Auditing**: Easily track where each asset is located and which department is responsible for it.
-*   **Operational Efficiency**: Manage repairs and maintenance history to prevent equipment failure.
-*   **Strategic Planning**: Detailed reports help in planning future equipment purchases and budgeting.
+*   **Cost Efficiency & Loss Prevention**: Maintain high accuracy of asset data to prevent theft, loss, or misplacement. Identifying missing assets early saves significant replacement costs.
+*   **Maintenance & Protection**: Manage repair logs and maintenance history to extend the life of your assets and prevent costly equipment failures.
+*   **Strategic Planning**: Detailed reports help in planning future equipment purchases and budgeting based on real usage data.
 
----
+
 
 ## 2. Application Flow
 
-Below is the general workflow of the system from setup to reporting:
+Below is the general workflow of the system, including the public search capability and role-based access:
 
 ```mermaid
 graph TD
-    A[Start: Setup Reference Data] --> B[Create Master Asset models]
-    B --> C[Register Asset Series / Serial Numbers]
-    C --> D{Asset Lifecycle}
-    D --> |Move| E[Location Transfer]
-    D --> |Repair| F[Maintenance Log]
-    D --> |Year End| G[Auto Depreciation]
-    D --> |End of Life| H[Leasing/Auction]
-    E --> I[History Tracking]
-    F --> I
-    G --> I
-    H --> I
-    I --> J[Financial & Audit Reports]
+    Public[Public Search Engine: No Login Required] --> |Find Asset| InfoCenter[Asset Info Center]
+    
+    Login[Login: Staff Required] --> Roles{Define Roles}
+    
+    Roles --> |Administrator| FullAccess[Full System Control & Settings]
+    Roles --> |Operator| LifeCycle[Asset Life Cycle: Move, Fix, Auction]
+    Roles --> |Supervisor| Reports[Business Intelligence & Reporting]
+
+    FullAccess --> Setup[Setup Reference Data]
+    Setup --> Master[Create Master Asset models]
+    Master --> Series[Register Asset Series/SN]
+    Series --> LifeCycle
+    LifeCycle --> History[History Logging]
+    History --> Reports
 ```
 
-1.  **System Config**: Initialize locations, funds, and categories.
-2.  **Asset Entry**: Register models and then individual units (Serial Numbers).
-3.  **Transactions**: Track and update asset status periodically.
-4.  **Reporting**: Export audit and financial data.
+### Access Levels:
+1.  **Public (Umum)**: Can access the **Asset Information Center** to search for assets by serial number without logging in.
+2.  **Administrator**: Full access to all modules, including reference data, asset registry, transactions, reporting, and member management.
+3.  **Operator**: Focused on the **Asset Life Cycle**. Can perform transactions like moving assets, logging repairs, and tracking historical updates.
+4.  **Supervisor**: Focused on **Data Oversight**. Accesses detailed reports and audit trails for financial and operational analysis.
 
----
+
 
 ## 3. Installation with Docker
 
@@ -52,7 +68,19 @@ The project already contains the necessary Docker files:
 *   `Dockerfile`: Configures PHP 8.1 with Apache and `mysqli` extension.
 *   `docker-compose.yml`: Sets up the application and MariaDB 10.1.19 database.
 
-### Running the Application
+### Step 1: Choose Your Data Setup
+Before running the system, choose how you want to initialize the database in `docker-compose.yml`:
+
+*   **Option A: With Sample Data (Demo)**: To test the system with examples (Categories, Assets, Reports), ensure the following line is active in your `docker-compose.yml`:
+    ```yaml
+    - ./data-sample/struucture-with-data-sample.sql:/docker-entrypoint-initdb.d/init.sql
+    ```
+*   **Option B: Clean Structure (Production)**: For a fresh start without any data, uncomment the line below in `docker-compose.yml` instead:
+    ```yaml
+    - ./data-sample/structure-only.sql:/docker-entrypoint-initdb.d/init.sql
+    ```
+
+### Step 2: Running the Application
 1.  Open your terminal in the project root.
 2.  Run:
     ```bash
@@ -60,18 +88,19 @@ The project already contains the necessary Docker files:
     ```
 3.  Access the app at: `http://localhost:8080`
 
-### Database Setup
-The database is automatically pre-configured using `data-sample/struucture-with-data-sample.sql`. 
+### Step 3: Database Verification
+The application uses the credentials defined in [docker-compose.yml](file:///d:/mygithub-research/opensource-product/sbiz-asset/docker-compose.yml). 
 
-**Current Database Config in `apps/config/config.php`**:
+**Automatic Config Status in `apps/config/config.php`**:
 ```php
 $config['db']['server'] = 'db'; 
 $config['db']['username'] = 'root';
 $config['db']['password'] = 'root';
 $config['db']['database'] = 'sbiz_asset';
 ```
+*(No manual changes to PHP config are needed as I have already configured this for you).*
 
----
+
 
 ## 4. User Management
 
@@ -82,7 +111,7 @@ The application uses role-based member management to control access.
 *   **Adding Users**: Create new staff accounts and set permissions.
     ![Add Member](ss/40-user-management-hak-akses-add.jpg)
 
----
+
 
 ## 5. User Manual
 

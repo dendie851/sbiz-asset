@@ -23,8 +23,11 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql
-      # Use either structure-only.sql or struucture-with-data-sample.sql
+      # Option 1: Initial Import with Sample Data (Use this for demo purposes)
       - ./data-sample/struucture-with-data-sample.sql:/docker-entrypoint-initdb.d/init.sql
+      
+      # Option 2: Initial Import with Structure ONLY (Use this for a fresh production setup)
+      # - ./data-sample/structure-only.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - sbiz-network
 
