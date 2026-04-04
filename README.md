@@ -121,10 +121,16 @@ Before running the system, choose how you want to initialize the database in `do
     ```bash
     docker-compose up -d
     ```
+
+    ![Result Deploy Docker](ss-deploy/1-docker-deploy.jpg)
+
 3.  Access the app at: `http://localhost:8080`
 4.  **Default Credentials**:
     *   **Username**: `admin`
     *   **Password**: `1234`
+
+    ![Result Deploy Docker](ss-deploy/2-docker-deploy.jpg)
+
 
 ### Step 3: Database Verification
 The application uses the credentials defined in [docker-compose.yml](file:///d:/mygithub-research/opensource-product/sbiz-asset/docker-compose.yml). 
