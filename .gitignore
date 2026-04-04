@@ -1,0 +1,14 @@
+# ignore configuration files with sensitive data
+apps/config/config.php
+
+# ignore uploaded assets and dynamic content
+apps/admin/asset/foto/asset_*
+apps/admin/asset/foto/*/thumb/
+
+# ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+# ignore log files
+*.log
+
