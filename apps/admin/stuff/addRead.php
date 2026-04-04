@@ -15,7 +15,7 @@ $query = "select if(max(code)=null,0,max(code)) as code
 
 $data = mysqli_query($con, $query) or die(mysqli_error($con));
 $assetCode = mysqli_fetch_array($data);
-$assetCodeSugest = str_pad((int) $assetCode['code'] + 1, 5, "0", STR_PAD_LEFT);
+$assetCodeSugest = str_pad((int) $assetCode['code'] + 1, 3, "0", STR_PAD_LEFT);
 
 include '../../lib/connection-close.php';
 ?>

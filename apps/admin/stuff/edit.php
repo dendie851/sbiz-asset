@@ -24,7 +24,7 @@
 		<td>
 			<input name="code" type="text" value="<?php echo isset($_POST['code']) ? $_POST['code'] : $data['code'] ?>"
 				size="5" maxlength="5" />
-			<small>Kode Asset harus 5 digit</small>
+			<small>Kode Asset minumum 3 digit</small>
 			<div style="color:red"><?php echo isset($msgError['code']) ? $msgError['code'] : '' ?></div>
 			<input name="codeOri" type="hidden" value="<?php echo $data['code'] ?>" size="5" maxlength="5" />
 		</td>

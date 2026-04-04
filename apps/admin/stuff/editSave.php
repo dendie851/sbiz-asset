@@ -24,9 +24,9 @@ mysqli_query($con, $query) or die(mysqli_error($con));
 
 strlen($foto['name']) > 0 ? updateFile($id, '', '', uploadFile($foto, 1, $id), 1) : '';
 
-$delete = $_POST['delete'];
+$delete = isset($_POST['delete']) ? $_POST['delete'] : [];
 
-if (count($delete) > 0) {
+if (is_array($delete) && count($delete) > 0) {
 	foreach ($delete as $val) {
 		$query = "select foto, foto_thumb 
 				from asset		
@@ -43,12 +43,13 @@ if (count($delete) > 0) {
 				  foto_thumb = ''
 				where id = '$val'";
 
-		mysql_query($query) or die(mysql_error());
+		mysqli_query($con, $query) or die(mysqli_error($con));
 	}
 }
 
 function updateFile($productId, $fotoId, $title, $fotoName, $isPrimary)
 {
+	global $con;
 	$path = 'asset_' . $productId . '/' . $fotoName;
 	$pathThumb = 'asset_' . $productId . '/thumb/' . $fotoName;
 
@@ -57,7 +58,7 @@ function updateFile($productId, $fotoId, $title, $fotoName, $isPrimary)
 			  foto_thumb = '$pathThumb'
 			where id = '$productId'";
 
-	mysql_query($query) or die(mysql_error());
+	mysqli_query($con, $query) or die(mysqli_error($con));
 }
 
 function uploadFile($file, $index, $productId)

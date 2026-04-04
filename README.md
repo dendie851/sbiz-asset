@@ -1,14 +1,11 @@
 # Simple Small Business Asset (Sbiz-Asset)
 
-## Introduction
-
 Managing physical assets is a critical challenge for growing businesses. Without a proper system, tracking furniture, electronics, and specialized equipment often leads to data loss, missing items, and inaccurate financial records. 
 
 **Simple Small Business Asset (Sbiz-Asset)** is an **Open Source** initiative and a comprehensive management solution. It is designed to help organizations move away from manual spreadsheets and towards a professional process that prevents asset loss and eliminates wasteful duplicate spending. Open for anyone to use, modify, and develop, the system is available for free under the MIT License to support better asset governance worldwide.
 
 
 ## Table of Contents
-*   [Introduction](#introduction)
 *   [License](#-license)
 *   [1. Business Purpose and Benefits](#1-business-purpose-and-benefits)
 *   [2. Application Flow](#2-application-flow)

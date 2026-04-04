@@ -20,9 +20,9 @@ if ($jml > 0) {
 }
 
 
-if (strlen($code) < 5) {
+if (strlen($code) < 3) {
 	$status = false;
-	$msgError['code'] = 'Kode asset harus 5 digit';
+	$msgError['code'] = 'Kode asset harus 3 digit';
 }
 
 

@@ -22,7 +22,7 @@
 			<input name="code" type="text"
 				value="<?php echo isset($_POST['code']) ? $_POST['code'] : $assetCodeSugest ?>" size="5"
 				maxlength="5" />
-			<small>Kode Asset harus 5 digit</small>
+			<small>Kode Asset minimum 3 digit</small>
 			<div style="color:red"><?php echo isset($msgError['code']) ? $msgError['code'] : '' ?></div>
 		</td>
 		</tr>
