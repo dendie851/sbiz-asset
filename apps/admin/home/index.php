@@ -1,5 +1,6 @@
 <?php ob_start(); ?>
 <?php include 'indexRead.php' ?>
+<?php include '../../lib/connection.php'; ?>
 
 <link rel="stylesheet" type="text/css" media="screen" href="../asset/css/jquery.lightbox-0.5.css" />
 
@@ -29,7 +30,6 @@
 						<tr>
 							<td width="50%"><b><?php echo $val['name'] ?></td>
 							<td align="rigth">:
-								<?php include '../../lib/connection.php'; ?>
 								<?php
 								$query = "select sum(price) as nilai 
 											from asset_series as ase
@@ -41,7 +41,6 @@
 								$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
 								$data = mysqli_fetch_array($tmp);
 								?>
-								<?php include '../../lib/connection-close.php'; ?>
 
 								<?php echo number_format($data['nilai'], 0, '', '.') ?>
 							</td>
@@ -50,7 +49,6 @@
 					<tr>
 						<td width="50%"><b>Total Asset</td>
 						<td>:
-							<?php include '../../lib/connection.php'; ?>
 
 							<?php
 							$query = "select sum(price) as nilai 
@@ -63,8 +61,6 @@
 							$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
 							$data = mysqli_fetch_array($tmp);
 							?>
-							<?php include '../../lib/connection-close.php'; ?>
-
 							<?php echo number_format($data['nilai'], 0, '', '.') ?>
 						</td>
 					</tr>
@@ -76,7 +72,6 @@
 						<tr>
 							<td width="50%"><b><?php echo $val['name'] ?></td>
 							<td>:
-								<?php include '../../lib/connection.php'; ?>
 								<?php
 								$query = "select count(id) as nilai 
 											from asset_series as ase
@@ -88,7 +83,6 @@
 								$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
 								$data = mysqli_fetch_array($tmp);
 								?>
-								<?php include '../../lib/connection-close.php'; ?>
 
 								<?php echo number_format($data['nilai'], 0, '', '.') ?> Buah
 							</td>
@@ -97,7 +91,6 @@
 					<tr>
 						<td width="50%"><b>Total Asset</td>
 						<td>:
-							<?php include '../../lib/connection.php'; ?>
 							<?php
 							$query = "select count(id) as nilai 
 											from asset_series as ase
@@ -109,7 +102,6 @@
 							$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
 							$data = mysqli_fetch_array($tmp);
 							?>
-							<?php include '../../lib/connection-close.php'; ?>
 
 							<?php echo number_format($data['nilai'], 0, '', '.') ?> Buah
 						</td>
@@ -121,7 +113,6 @@
 					<tr>
 						<td width="50%"><b>BAIK</td>
 						<td>:
-							<?php include '../../lib/connection.php'; ?>
 							<?php
 							$query = "select count(id) as nilai 
 											from asset_series as ase
@@ -134,7 +125,6 @@
 							$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
 							$data = mysqli_fetch_array($tmp);
 							?>
-							<?php include '../../lib/connection-close.php'; ?>
 
 							<?php echo number_format($data['nilai'], 0, '', '.') ?> Buah
 						</td>
@@ -142,7 +132,6 @@
 					<tr>
 						<td width="50%"><b>SETENGAH BAIK</td>
 						<td>:
-							<?php include '../../lib/connection.php'; ?>
 							<?php
 							$query = "select count(id) as nilai 
 											from asset_series as ase
@@ -155,7 +144,6 @@
 							$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
 							$data = mysqli_fetch_array($tmp);
 							?>
-							<?php include '../../lib/connection-close.php'; ?>
 
 							<?php echo number_format($data['nilai'], 0, '', '.') ?> Buah
 						</td>
@@ -163,7 +151,6 @@
 					<tr>
 						<td width="50%"><b>RUSAK</td>
 						<td>:
-							<?php include '../../lib/connection.php'; ?>
 							<?php
 							$query = "select count(id) as nilai 
 											from asset_series as ase
@@ -176,7 +163,6 @@
 							$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
 							$data = mysqli_fetch_array($tmp);
 							?>
-							<?php include '../../lib/connection-close.php'; ?>
 
 							<?php echo number_format($data['nilai'], 0, '', '.') ?> Buah
 						</td>
@@ -237,6 +223,7 @@
 	});
 </script>
 
+<?php include '../../lib/connection-close.php'; ?>
 <?php $templateContent = ob_get_contents(); ?>
 <?php ob_end_clean(); ?>
 

@@ -1,6 +1,6 @@
 <?php
-$config['db']['server'] = 'localhost';
+$config['db']['server'] = 'db';
 $config['db']['username'] = 'root';
-$config['db']['password'] = '';
+$config['db']['password'] = 'root';
 $config['db']['database'] = 'sbiz_asset';
 ?>

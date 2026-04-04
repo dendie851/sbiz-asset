@@ -12,24 +12,39 @@ services:
       - db
     networks:
       - sbiz-network
-
   db:
-    image: mariadb:10.1.19
-    container_name: sbiz-asset-db
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=sbiz_asset
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./mysql-data:/var/lib/mysql
-      # Option 1: Initial Import with Sample Data (Use this for demo purposes)
-      - ./data-sample/struucture-with-data-sample.sql:/docker-entrypoint-initdb.d/init.sql
-      
-      # Option 2: Initial Import with Structure ONLY (Use this for a fresh production setup)
-      # - ./data-sample/structure-only.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - sbiz-network
+      # Menggunakan versi 10.11 yang merupakan versi Long Term Support (LTS)
+      image: mariadb:10.11
+      container_name: sbiz-asset-db
+      command: 
+        - mysqld
+        - --skip-name-resolve
+        - --wait_timeout=600
+        - --query-cache-size=64M
+        - --key_buffer_size=512M
+        - --query-cache-type=1
+        - --max-connections=150
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=sbiz_asset
+      healthcheck:
+        test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+      ports:
+        - "3306:3306"
+      volumes:
+  
+        - ./mysql-data:/var/lib/mysql
+        # Option 1: Initial Import with Sample Data (Use this for demo purposes)
+        - ./data-sample/struucture-with-data-sample.sql:/docker-entrypoint-initdb.d/init.sql
+        
+        # Option 2: Initial Import with Structure ONLY (Use this for a fresh production setup)
+        # - ./data-sample/structure-only.sql:/docker-entrypoint-initdb.d/init.sql
+      networks:
+        - sbiz-network
+      restart: always
 
 networks:
   sbiz-network:

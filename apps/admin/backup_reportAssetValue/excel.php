@@ -1,4 +1,10 @@
 <?php ob_start(); ?>
+<?php
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Content-Type: application/vnd.ms-excel");
+header("Content-Disposition: attachment; filename=LAPORAN-ASSET.xls");
+?>
+
 <link rel="stylesheet" type="text/css" media="screen" href="../asset/css/jquery.lightbox-0.5.css" />
 
 <?php include 'indexRead.php' ?>
@@ -14,22 +20,18 @@
 <form action="index.php" method="post">
 	<table width="100%">
 		<tr>
-			<td align="left" width="30%"> SUMBER DANA </td>
+			<td align="left" width="20%"> SUMBER DANA </td>
 			<td><b>: <?php echo $fundId == 'x' ? 'SEMUA' : $printDataFund['name'] ?></b></td>
 		</tr>
 		<tr>
 			<td align="left" width=""> REFERENSI HARGA </td>
 			<td><b>:
-			<td><b>:
-					<?php echo $fundId == 'x' ? 'SEMUA' : ($_REQUEST['referencePrice'] == '0' ? 'Harga Sekarang' : ' Beli'); ?>
+					<?php echo $fundId == 'x' ? 'SEMUA' : ($_REQUEST['referencePrice'] == '0' ? 'Harga Sekarang' : ' Beli') ?>
 				</b></td>
-			</td>
 		</tr>
 		<tr>
 			<td align="left" width=""> DEPARTEMEN </td>
-			<td><b>:
-					<?php echo $departementId == 'x' ? 'SEMUA' : $printDataDepartement['name'] ?>
-				</b></td>
+			<td><b>: <?php echo $departementId == 'x' ? 'SEMUA' : $printDataDepartement['name'] ?></b></td>
 		</tr>
 		<tr>
 			<td align="left" width=""> KONDISI </td>
@@ -75,49 +77,64 @@
 			<?php include '../../lib/connection.php'; ?>
 			<?php while ($val = mysql_fetch_array($dataCategory)): ?>
 				<?php
-				$whereDate = "";
-				$joinDate = "";
-				if (strlen($dateBuy) > 5) {
-					$whereDate = " AND ah.date >= '$dateBuy' ";
-					$joinDate = " INNER JOIN asset_history as ah ON ah.asset_series_id = ase.id AND ah.type = '0' ";
-				}
+				$query = "select sum((select count(ase.id) 
+											  from asset_series as ase 
+											  where ase.asset_id = asset.id 
+											  and ase.is_delete = '0' 
+											  and ase.is_remove = '0'
+											  $where
+											  )) as jml
+							from asset
+							where asset.is_delete = '0'
+								and asset.category_id = '{$val['id']}'
+							group by asset.category_id";
 
-				$query = "SELECT COUNT(ase.id) as jml
-							FROM asset as a
-							INNER JOIN asset_series as ase ON a.id = ase.asset_id
-							$joinDate
-							WHERE a.is_delete = '0'
-								AND ase.is_delete = '0'
-								AND ase.is_remove = '0'
-								AND a.category_id = '{$val['id']}'
-								$where
-								$whereDate";
 
 				$tmpCount = mysql_query($query) or die(mysql_error());
 				$dataCountCategoryAsset = mysql_fetch_array($tmpCount);
 				?>
 				<?php if ($dataCountCategoryAsset['jml'] > 0): ?>
 					<?php
-					$query = "SELECT 
-									a.id, a.name, a.code, a.foto, a.foto_thumb, 
-									COUNT(ase.id) as jml,
-									SUM(ase.price) as nilai,
-									SUM(ase.price_buy) as nilai_buy
-								FROM asset as a
-								INNER JOIN asset_series as ase ON a.id = ase.asset_id 
-									AND ase.is_delete = '0' 
-									AND ase.is_remove = '0'
-								$joinDate
-								WHERE a.is_delete = '0' 
-									AND a.category_id = '{$val['id']}'
-									$where
-									$whereDate
-								GROUP BY a.id
-								ORDER BY a.name";
+					/*
+					$query = "select id,name,code,foto, foto_thumb, 
+						(select count(id) as jml from asset_series as ase where ase.asset_id = asset.id and ase.is_delete = '0' and ase.is_remove = '0' $where) as jml,
+						(select sum(price) as jml from asset_series as ase where ase.asset_id = asset.id and ase.is_delete = '0' and ase.is_remove = '0' $where) as nilai,											
+						(select sum(price_buy) as jml from asset_series as ase where ase.asset_id = asset.id and ase.is_delete = '0' and ase.is_remove = '0' $where) as nilai_buy											
+					from asset
+					where is_delete = '0'
+						and category_id = '{$val['id']}'
+					order by name";	
+					$dataAsset = mysql_query($query) or die (mysql_error());
+					*/
 
+					$query = "select a.id,name,code,foto, foto_thumb, 
+									(   select count(ase.id) as jml 
+										from asset_series as ase 									
+										inner join asset_history as ah
+										on ah.asset_series_id = ase.id
+										  and ah.type = '0'
+										  and ah.date >= '$dateBuy'
+										where ase.asset_id = a.id and ase.is_delete = '0' and ase.is_remove = '0' $where) as jml,
+									(select sum(price) as jml 
+									 from asset_series as ase 
+										inner join asset_history as ah
+										on ah.asset_series_id = ase.id
+										  and ah.type = '0'
+										  and ah.date >= '$dateBuy'									 
+									 where ase.asset_id = a.id and ase.is_delete = '0' and ase.is_remove = '0' $where) as nilai,											
+									(select sum(price_buy) as jml 
+									 from asset_series as ase 
+										inner join asset_history as ah
+										on ah.asset_series_id = ase.id
+										  and ah.type = '0'
+										  and ah.date >= '$dateBuy'									 
+									 where ase.asset_id = a.id and ase.is_delete = '0' and ase.is_remove = '0' $where) as nilai_buy											
+								from asset as a
+								where is_delete = '0'
+									and category_id = '{$val['id']}'
+								order by name";
 					$dataAsset = mysql_query($query) or die(mysql_error());
 					?>
-
 					<tr>
 						<td width="2%" valign="top"><?php echo $i ?>. </td>
 						<td valign="top"><b><?php echo $val['name'] ?></b><br />
@@ -146,17 +163,17 @@
 																	<?php echo $i . '.' . $j ?> 							<?php echo $valAsset['name'] ?>
 																<?php endif; ?>
 															</td>
-															<td align="center"> <b><?php echo $valAsset['code'] ?></b></td>
+															<td align="center"> <b>'<?php echo $valAsset['code'] ?>'</b></td>
 															<td align="center">
 																<?php echo $valAsset['jml'] ?>
 																<?php $assetTotal = $assetTotal + $valAsset['jml'] ?>
 															</td>
 															<td align="center">
 																<?php if ($referencePrice == 0): ?>
-																	<?php echo number_format($valAsset['nilai'], 0, '', '.') ?>
+																	<?php echo number_format($valAsset['nilai'], 0, '', '.') . ',-' ?>
 																	<?php $assetNilai = $assetNilai + $valAsset['nilai'] ?>
 																<?php else: ?>
-																	<?php echo number_format($valAsset['nilai_buy'], 0, '', '.') ?>
+																	<?php echo number_format($valAsset['nilai_buy'], 0, '', '.') . ',-' ?>
 																	<?php $assetNilai = $assetNilai + $valAsset['nilai_buy'] ?>
 																<?php endif; ?>
 															</td>
@@ -169,7 +186,8 @@
 														<th width="25%" align="left">&nbsp;</th>
 														<th width="15%" align="center">&nbsp;</th>
 														<th width="15%" align="center"><?php echo $assetTotal ?></th>
-														<th align="center"><?php echo number_format($assetNilai, 0, '', '.') ?></th>
+														<th align="center"><?php echo number_format($assetNilai, 0, '', '.') . ',-' ?>
+														</th>
 													</tr>
 													<thead>
 									</table>
@@ -195,6 +213,7 @@
 				<?php $assetGrandNilai = $assetGrandNilai + $assetNilai ?>
 			<?php endwhile; ?>
 			<?php include '../../lib/connection-close.php'; ?>
+
 			<tr>
 				<td></td>
 				<td>
@@ -204,7 +223,7 @@
 								<tr>
 									<th width="45%" align="left" colspan="2">GRAND TOTAL</th>
 									<th width="15%" align="center"><?php echo $assetGrandTotal ?></th>
-									<th align="center"><?php echo number_format($assetGrandNilai, 0, '', '.') ?></th>
+									<th align="center"><?php echo number_format($assetGrandNilai, 0, '', '.') . ',-' ?></th>
 								</tr>
 								<thead>
 						</table>

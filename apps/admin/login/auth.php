@@ -1,5 +1,6 @@
 <?php
 @session_start();
+session_write_close(); // <--- Tambahkan ini
 // Menyembunyikan semua error jenis Warning, Notice, dan Deprecated
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 

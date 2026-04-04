@@ -17,6 +17,7 @@ $query = "select id,name
 		order by name";
 $dataItem = mysqli_query($con, $query) or die(mysqli_error($con));
 
+/*
 $query = "select ah.id, asset_series_id, date, date_format(date,'%d %M %Y') as format_date, type, decription,ase.no_serries,
 			(select a.code from asset as a where id = (select ase.asset_id id from asset_series as ase where ase.id = ah.asset_series_id)) no_asset,
 			(select a.name from asset as a where id = (select ase.asset_id id from asset_series as ase where ase.id = ah.asset_series_id)) asset_name,
@@ -28,9 +29,33 @@ $query = "select ah.id, asset_series_id, date, date_format(date,'%d %M %Y') as f
 		inner join asset_series as ase
 			on ase.id = ah.asset_series_id
 			and ase.departement_id in ($loginAccessDepartement)
-		    and ase.fund_id in ($loginAccessFund)
+			and ase.fund_id in ($loginAccessFund)
 		order by date desc
 		limit 0,30 ";
+*/
+
+$query = "SELECT 
+		ah.id, 
+		ah.asset_series_id, 
+		ah.date, 
+		DATE_FORMAT(ah.date, '%d %M %Y') AS format_date, 
+		ah.type, 
+		ah.decription,
+		ase.no_serries,
+		a.code AS no_asset,
+		a.name AS asset_name,
+		a.code AS asset_id,
+		a.foto AS asset_foto,
+		a.foto_thumb AS asset_foto_thumb,
+		c.name AS category_name
+	FROM asset_history AS ah
+	INNER JOIN asset_series AS ase ON ase.id = ah.asset_series_id
+	INNER JOIN asset AS a ON a.id = ase.asset_id
+	INNER JOIN category AS c ON c.id = a.category_id
+	WHERE ase.departement_id IN ($loginAccessDepartement)
+	AND ase.fund_id IN ($loginAccessFund)
+	ORDER BY ah.date DESC
+	LIMIT 0, 30";
 
 $dataHistory = mysqli_query($con, $query) or die(mysqli_error($con));
 

@@ -74,7 +74,8 @@
 									<table width="100%" style="border: 0px">
 										<tr>
 											<td colspan="5" style="border: 0px; padding:0px">
-												<b><small><?php echo $val['asset_name'] ?></small></b><br /></td>
+												<b><small><?php echo $val['asset_name'] ?></small></b><br />
+											</td>
 										</tr>
 										<tr>
 											<td width="40%" style="border: 0px; padding:0px"><small>No Seri</small></td>

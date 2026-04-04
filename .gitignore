@@ -12,3 +12,5 @@ Thumbs.db
 # ignore log files
 *.log
 
+# ignore data mysql
+/mysql-data/*

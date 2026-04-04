@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Localhost - MySQL
+ Source Server         : Docker - MyQL - SBIZ Asset
  Source Server Type    : MySQL
- Source Server Version : 100119
- Source Host           : localhost:3306
+ Source Server Version : 101116
+ Source Host           : 127.0.0.1:3306
  Source Schema         : sbiz_asset
 
  Target Server Type    : MySQL
- Target Server Version : 100119
+ Target Server Version : 101116
  File Encoding         : 65001
 
- Date: 03/04/2026 15:54:25
+ Date: 04/04/2026 21:08:01
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,8 @@ CREATE TABLE `asset`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `code`(`code`) USING BTREE,
   INDEX `idx_asset_cat_del_name`(`category_id`, `is_delete`, `name`) USING BTREE,
-  INDEX `idx_asset_category_delete`(`category_id`, `is_delete`, `name`) USING BTREE
+  INDEX `idx_asset_category_delete`(`category_id`, `is_delete`, `name`) USING BTREE,
+  INDEX `idx_category`(`category_id`, `is_delete`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 101 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -75,7 +76,8 @@ CREATE TABLE `asset_history`  (
   `type` enum('0','1','2','3') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0' COMMENT '0=pembelian, 1=perbaikan, 2=pemindahan 3=pemusnahan',
   `decription` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_ah_series_type_date`(`asset_series_id`, `type`, `date`) USING BTREE
+  INDEX `idx_ah_series_type_date`(`asset_series_id`, `type`, `date`) USING BTREE,
+  INDEX `idx_history_fast`(`asset_series_id`, `type`, `date`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 15193 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -113,7 +115,9 @@ CREATE TABLE `asset_series`  (
   INDEX `idx_access`(`departement_id`, `fund_id`) USING BTREE,
   INDEX `idx_ase_filter`(`is_delete`, `is_remove`, `departement_id`, `fund_id`) USING BTREE,
   INDEX `idx_ase_location`(`location_id`) USING BTREE,
-  INDEX `idx_ase_asset`(`asset_id`) USING BTREE
+  INDEX `idx_ase_asset`(`asset_id`) USING BTREE,
+  INDEX `idx_asset_relasi`(`asset_id`, `is_delete`, `is_remove`) USING BTREE,
+  INDEX `idx_prices`(`price`, `price_buy`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 12440 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -210,7 +214,6 @@ CREATE TABLE `user`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 21 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
 
 -- ----------------------------
 -- Data untuk tabel position
