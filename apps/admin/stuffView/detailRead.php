@@ -1,19 +1,19 @@
-<?php
-include '../login/auth.php';
-include '../lib/connection.php';
-include '../lib/message.class.php';
+<?php 
+	include '../login/auth.php';
+	include '../lib/connection.php';
+	include '../lib/message.class.php';
 
 
-$stuffId = $_REQUEST['stuffId'];
-
-$query = "select id, name, stock, stock_min_alert, const_id
+	$stuffId = $_REQUEST['stuffId'];
+	
+	$query = "select id, name, stock, stock_min_alert, const_id
 		from stuff
 		where id = '$stuffId'";
 
-$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
-$dataStuff = mysqli_fetch_array($tmp);
+	$tmp = mysqli_query($con, $query); 
+	$dataStuff = mysqli_fetch_array($tmp);
 
-$query = "select sh.id, sh.stuff_id, sh.tipe, sh.amount, sh.description, date_format(sh.date,'%d %M %Y') as date, s.name,
+	$query = "select sh.id, sh.stuff_id, sh.tipe, sh.amount, sh.description, date_format(sh.date,'%d %M %Y') as date, s.name,
 		   (select c.name from const as c where c.id = s.const_id)
 		from stuff_history as sh
 		inner join stuff as s
@@ -23,8 +23,8 @@ $query = "select sh.id, sh.stuff_id, sh.tipe, sh.amount, sh.description, date_fo
 		order by sh.date desc
 		limit 0,50";
 
-$data = mysqli_query($con, $query) or die(mysqli_error($con));
+	$data = mysqli_query($con, $query)  or die(mysql_error());
 
 
-include '../lib/connection-close.php';
+	include '../lib/connection-close.php';
 ?>

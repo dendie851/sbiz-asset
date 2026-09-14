@@ -1,14 +1,14 @@
-<?php
-include '../login/auth.php';
-include '../../lib/connection.php';
-include '../../lib/split.class.php';
-include '../../lib/message.class.php';
+<?php 
+	include '../login/auth.php';
+	include '../../lib/connection.php';
+	include '../../lib/split.class.php';
+	include '../../lib/message.class.php';
 
-$assetId = $_REQUEST['assetId'];
-$locationId = $_REQUEST['locationId'];
-$fundId = $_REQUEST['fundId'];
+	$assetId = $_REQUEST['assetId'];
+	$locationId = $_REQUEST['locationId'];
+	$fundId = $_REQUEST['fundId'];
 
-$query = "select id, no_serries, cond, price,
+	$query = "select id, no_serries, cond, price,
 		  (select code from asset as a where a.id = ase.asset_id) as code
 		from asset_series as ase
 		  where 1=1
@@ -17,11 +17,11 @@ $query = "select id, no_serries, cond, price,
 			and asset_id = '$assetId'
 			and location_id = '$locationId'
 		    and ase.departement_id in ($loginAccessDepartement)
-			and fund_id = '$fundId'";
-
-$data = mysqli_query($con, $query) or die(mysqli_error($con));
-
-$query = "select count(id) as total
+			and fund_id = '$fundId'";	
+		  
+	$data = mysqli_query($con, $query) or die(mysqli_error($con));			  
+		
+	$query = "select count(id) as total
 		from asset_series as ase
 		  where 1=1
 			and ase.is_delete = '0'
@@ -29,12 +29,12 @@ $query = "select count(id) as total
 			and asset_id = '$assetId'
 			and location_id = '$locationId'
 		    and ase.departement_id in ($loginAccessDepartement)
-			and fund_id = '$fundId'";
+			and fund_id = '$fundId'";	
 
-$dataTotal = mysqli_query($con, $query) or die(mysqli_error($con));
-$total = mysqli_fetch_array($dataTotal);
+	$dataTotal = mysqli_query($con, $query)  or die(mysql_error());
+	$total = mysqli_fetch_array($dataTotal);
 
-$split = new Split('detail.php', $total['total'], 25, 25);
-
-include '../../lib/connection-close.php';
+	$split = new Split('detail.php',$total['total'],25,25);
+				
+	include '../../lib/connection-close.php';
 ?>

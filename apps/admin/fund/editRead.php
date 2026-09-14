@@ -1,16 +1,16 @@
-<?php
-include '../login/auth.php';
-include '../../lib/connection.php';
+<?php 
+	include '../login/auth.php';
+	include '../../lib/connection.php';
 
 
-$id = $_REQUEST['id'];
+	$id = $_REQUEST['id'];
 
-$query = "select id,name 
+	$query = "select id,name 
 		from fund
 		where id='$id'";
 
-$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
-$data = mysqli_fetch_array($tmp);
+	$tmp = mysqli_query($con, $query); 
+	$data = mysqli_fetch_array($tmp);
 
-include '../../lib/connection-close.php';
+	include '../../lib/connection-close.php';
 ?>

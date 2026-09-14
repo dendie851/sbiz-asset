@@ -19,7 +19,7 @@
 		  size = '$size',
 		  status = '$status'";
 
-	mysql_query($query) or die(mysql_error());
+	mysqli_query($con, $query)  or die(mysql_error());
 
 	include '../../lib/connection-close.php';
 

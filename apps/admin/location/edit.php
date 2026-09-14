@@ -5,8 +5,8 @@
 	<hr />
 	<form action="editSave.php" method="post" enctype="multipart/form-data">
 		<input name="id" type="hidden" value="<?php echo $data['id'] ?>" />			
-		<input name="level" type="hidden" value="<?php echo isset($_REQUEST['level']) ? $_REQUEST['level'] : '' ?>"/>			
-		<input name="parentId" type="hidden" value="<?php echo isset($_REQUEST['parentId']) ? $_REQUEST['parentId'] : '' ?>"/>			
+		<input name="level" type="hidden" value="<?php echo $_REQUEST['level'] ?>"/>			
+		<input name="parentId" type="hidden" value="<?php echo $_REQUEST['parentId'] ?>"/>			
 
 		<table width="100%">
 			<tr>
@@ -42,7 +42,7 @@
 		</table>
 		<hr />
 		<input type="submit" value="SIMPAN"/>
-		<input type="button" value="BATAL" onclick="window.location='index.php?positionLevel=<?php echo isset($_REQUEST['positionLevel']) ? $_REQUEST['positionLevel'] : '' ?>&positionParentId=<?php echo isset($_REQUEST['positionParentId']) ? $_REQUEST['positionParentId'] : '' ?>'" />	
+		<input type="button" value="BATAL" onclick="window.location='index.php?positionLevel=<?php echo $_REQUEST['positionLevel'] ?>&positionParentId=<?php echo $_REQUEST['positionParentId']?>'" />	
 	</form>
 <?php $templateContent = ob_get_contents(); ?>
 <?php ob_end_clean(); ?>

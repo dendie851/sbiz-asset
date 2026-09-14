@@ -1,32 +1,32 @@
-<?php
-include '../login/auth.php';
-include 'editValidate.php';
-include '../../lib/connection.php';
+<?php 
+	include '../login/auth.php';
+	include 'editValidate.php';
+	include '../../lib/connection.php';
 
-$keyword = $_POST['keyword'];
-$id = $_POST['id'];
-$description = $_POST['description'];
+	$keyword = $_POST['keyword'];
+	$id = $_POST['id'];	
+	$description = $_POST['description'];	
 
-$tmp = explode('/', $_POST['dateRepair']);
-$dateRepair = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
+	$tmp = explode('/',$_POST['dateRepair']);
+	$dateRepair  = $tmp[2].'-'.$tmp[1].'-'.$tmp[0];	
 
-
-if (count($id) > 0) {
-	$i = 0;
-	foreach ($id as $val) {
-		$query = "insert asset_history
+	
+	if(count($id) > 0 ) {
+		$i=0;
+		foreach($id as $val) {			
+			$query = "insert asset_history
 				   set date = '$dateRepair',
 					  type = '1',
 					  asset_series_id = '$val',
-					  decription = '<b>Di Perbaiki</b><br />$description'";
+					  decription = '<b>Di Perbaiki</b><br />$description'";	
+					  
+			mysqli_query($con, $query) or die(mysqli_error($con));	
 
-		mysqli_query($con, $query) or die(mysqli_error($con));
-
-		$i++;
+			$i++;
+		}
 	}
-}
 
-include '../../lib/connection-close.php';
+	include '../../lib/connection-close.php';
 
-header('Location:index.php?id=' . $assetId . '&msg=addSuccess&keyword=' . $keyword);
+	header('Location:index.php?id='.$assetId.'&msg=addSuccess&keyword='.$keyword);
 ?>

@@ -1,19 +1,22 @@
-<?php
-include '../login/auth.php';
-include '../../lib/connection.php';
-include '../../lib/message.class.php';
+<?php 
+	include '../login/auth.php';
+	include '../../lib/connection.php';
+	include '../../lib/message.class.php';
 
-$tmp = explode('/', $_REQUEST['dateFrom']);
-$dateFrom = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
+	$_REQUEST['dateFrom'] =  isset($_REQUEST['dateFrom']) ? $_REQUEST['dateFrom']  : date('d/m/Y');
+	$tmp = explode('/',$_REQUEST['dateFrom']);
+	$dateFrom  = $tmp[2].'-'.$tmp[1].'-'.$tmp[0];
 
-$tmp = explode('/', $_REQUEST['dateTo']);
-$dateTo = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
+	$_REQUEST['dateTo'] =  isset($_REQUEST['dateTo']) ? $_REQUEST['dateTo']  : date('d/m/Y');
+	$tmp = explode('/',$_REQUEST['dateTo']);
+	$dateTo  = $tmp[2].'-'.$tmp[1].'-'.$tmp[0];
 
-$type = $_REQUEST['type'];
+	$_REQUEST['type'] = isset($_REQUEST['type']) ? $_REQUEST['type'] :'x';
+	$type = $_REQUEST['type'];
 
-$where = $type == 'x' ? '' : " and type = '$type' ";
+	$where =  $type == 'x' ? '' : " and type = '$type' ";
 
-$query = "select ah.id, asset_series_id, date, date_format(date,'%d %M %Y') as format_date, type, decription, 
+	$query = "select ah.id, asset_series_id, date, date_format(date,'%d %M %Y') as format_date, type, decription, 
 			(select ase.no_serries from asset_series as ase where ase.id = ah.asset_series_id ) no_serries,
 			(select ase.location_id from asset_series as ase where ase.id = ah.asset_series_id ) location_id,
 			(select a.code from asset as a where id = (select ase.asset_id id from asset_series as ase where ase.id = ah.asset_series_id)) no_asset,
@@ -30,44 +33,42 @@ $query = "select ah.id, asset_series_id, date, date_format(date,'%d %M %Y') as f
 		where (ah.date >= '$dateFrom' and ah.date <= '$dateTo')
 		$where
 		order by date desc
-		limit 0,500";
+		limit 0,500";	
 
-$dataHistory = mysqli_query($con, $query) or die(mysqli_error($con));
+	$dataHistory = mysqli_query($con, $query) or die(mysqli_error($con));
 
 
-$query = "select id,name,alias 
+	$query = "select id,name,alias 
 		from location
 		where is_delete = '0'
 		order by parent_id,name";
 
-$tmpLocation = mysqli_query($con, $query) or die(mysqli_error($con));
+	$tmpLocation = mysqli_query($con, $query) or die(mysqli_error($con));
 
-$dataLocation = array();
-while ($row = mysqli_fetch_array($tmpLocation)) {
-	$dataLocation[$row['id']] = getLocation($row['id']);
-}
-
-function getLocation($id)
-{
-	global $con;
-	$query = "select id,parent_id,name,level,alias 
+	$dataLocation = array();
+	while($row = mysqli_fetch_array($tmpLocation)) {
+	  $dataLocation[$row['id']] = getLocation($row['id'],$con);
+	}
+	
+	function getLocation($id,$con) {		
+		$query = "select id,parent_id,name,level,alias 
 		  from location
 		  where id = '$id'
 		   and is_delete = '0'";
 
-	$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
-	$result = mysqli_fetch_array($tmp);
+		$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
+		$result = mysqli_fetch_array($tmp);
 
-	$locationName = $result['name'];
+		$locationName = $result['name'];
 
-	if (strlen($result['parent_id']) > 0) {
-		if ($result['level'] > 1) {
-			$locationName = getLocation($result['parent_id']) . '~' . $locationName;
+		if(strlen($result['parent_id']) > 0) {
+			if($result['level'] > 1) {
+				$locationName = getLocation($result['parent_id'],$con).'~'.$locationName;
+			}
 		}
-	}
 
-	return $locationName;
-}
+		return $locationName;
+	}	
 
-include '../../lib/connection-close.php';
+	include '../../lib/connection-close.php';	
 ?>

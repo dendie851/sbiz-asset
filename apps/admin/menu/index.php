@@ -67,7 +67,9 @@
 						<ul>
 							<li><a href="../reportAssetValue/index.php">Nilai & Jumlah Asset</a></li>	
 							<li><a href="../reportAssetLocation/index.php">Lokasi Asset</a></li>
+							<!--
 							<li><a href="../reportAssetFund/index.php">Sumber Dana Asset</a></li>
+							-->
 							<li><a href="../reportAssetCondition/index.php">Kondisi Asset</a></li>								
 							<li><a href="../reportAssetTransaction/index.php">Asset Transaksi</a></li>								
 						</ul>

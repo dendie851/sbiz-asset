@@ -53,7 +53,7 @@
 				$where
 			  order by ase.location_id, code, no_serries
 			  limit $record,25";	
-		$data = mysql_query($query) or die (mysql_error());
+		$data = mysqli_query($con, $query) or die(mysqli_error($con));
 	
 		$query = "select count(ase.id) as total
 			from asset_series as ase
@@ -67,7 +67,7 @@
 				and ase.asset_id = '$assetId'
 				$where";	
 
-		$dataTotal = mysql_query($query) or die(mysql_error());				
+		$dataTotal = mysqli_query($con, $query)  or die(mysql_error());				
 	} else {
 		$query = "select id, asset_id, location_id, fund_id, no_serries, no_purchase,cond,
 			   merk, price_buy, price, cond, description, 
@@ -86,7 +86,7 @@
 			  order by ase.location_id, code, no_serries
 			  limit $record,25";
 
-		$data = mysql_query($query) or die (mysql_error());
+		$data = mysqli_query($con, $query) or die(mysqli_error($con));
 			  
 		$query = "select count(id) as total
 			from asset_series as ase
@@ -96,11 +96,11 @@
 				and ase.asset_id = '$assetId'
 				$where";		
 
-		$dataTotal = mysql_query($query) or die(mysql_error());				
+		$dataTotal = mysqli_query($con, $query)  or die(mysql_error());				
 	}	
 			  
 
-	$total = mysql_fetch_array($dataTotal);
+	$total = mysqli_fetch_array($dataTotal);
 
 	$split = new Split('detail.php',$total['total'],25,25);
 
@@ -110,22 +110,22 @@
 		where is_delete = '0'
 		order by parent_id,name";
 
-	$tmpLocation = mysql_query($query) or die (mysql_error());
+	$tmpLocation = mysqli_query($con, $query) or die(mysqli_error($con));
 	
 	$dataLocation = array();
-	while($row = mysql_fetch_array($tmpLocation)) {
-	  $dataLocation[$row['id']] = getLocation($row['id']);
+	while($row = mysqli_fetch_array($tmpLocation)) {
+	  $dataLocation[$row['id']] = getLocation($row['id'],$con);
 	}
 
 	
-	function getLocation($id) {		
+	function getLocation($id,$con) {		
 		$query = "select id,parent_id,name,level,alias 
 		  from location
 		  where id = '$id'
 		   and is_delete = '0'";
 
-		$tmp = mysql_query($query) or die (mysql_error());
-		$result = mysql_fetch_array($tmp);
+		$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
+		$result = mysqli_fetch_array($tmp);
 
 		$locationName = $result['name'];
 
@@ -135,7 +135,7 @@
 
 		if(strlen($result['parent_id']) > 0) {
 			if($result['level'] > 1) {
-				$locationName = getLocation($result['parent_id']).'~'.$locationName;
+				$locationName = getLocation($result['parent_id'],$con).'~'.$locationName;
 			}
 		}
 

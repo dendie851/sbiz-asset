@@ -1,17 +1,17 @@
-<?php
-include '../login/auth.php';
-include 'editValidate.php';
-include '../../lib/connection.php';
-include '../../lib/thumbnail.class.php';
+<?php 
+	include '../login/auth.php';
+	include 'editValidate.php';
+	include '../../lib/connection.php';
+	include '../../lib/thumbnail.class.php';
 
-$id = $_POST['id'];
-$categoryId = $_POST['categoryId'];
-$name = $_POST['name'];
-$code = $_POST['code'];
-$size = $_POST['size'];
-$foto = $_FILES['foto'];
+	$id = $_POST['id'];
+	$categoryId = $_POST['categoryId'];
+	$name = $_POST['name'];
+	$code = $_POST['code'];	
+	$size = $_POST['size'];	
+	$foto = $_FILES['foto'];
 
-$query = "update asset
+	$query = "update asset
 		set category_id = '$categoryId',
 		  name = '$name',
 		  code = '$code',
@@ -19,72 +19,69 @@ $query = "update asset
 		where  
 		 id = '$id'";
 
-mysqli_query($con, $query) or die(mysqli_error($con));
+	mysqli_query($con, $query) or die(mysqli_error($con));
 
 
-strlen($foto['name']) > 0 ? updateFile($id, '', '', uploadFile($foto, 1, $id), 1) : '';
+	strlen($foto['name']) > 0 ? updateFile($id,'','',uploadFile($foto,1,$id),1) : '';
 
-$delete = isset($_POST['delete']) ? $_POST['delete'] : [];
+	$delete = $_POST['delete']; 
 
-if (is_array($delete) && count($delete) > 0) {
-	foreach ($delete as $val) {
-		$query = "select foto, foto_thumb 
+	if(count($delete)  > 0) {
+		foreach($delete as $val) {
+			$query = "select foto, foto_thumb 
 				from asset		
 				where id = '$val'";
 
-		$tmp = mysqli_query($con, $query) or die(mysqli_error($con));
-		$data = mysqli_fetch_array($tmp);
+			$tmp = mysqli_query($con, $query)  or die(mysql_error());	
+			$data = mysqli_fetch_array($tmp);
 
-		is_file(dirname(__FILE__) . '/../asset/foto/' . $data['foto']) ? unlink(dirname(__FILE__) . '/../asset/foto/' . $data['foto']) : false;
-		is_file(dirname(__FILE__) . '/../asset/foto/' . $data['foto_thumb']) ? unlink(dirname(__FILE__) . '/../asset/foto/' . $data['foto_thumb']) : false;
+			is_file(dirname(__FILE__).'/../asset/foto/'.$data['foto']) ? unlink(dirname(__FILE__).'/../asset/foto/'.$data['foto']) : false;
+			is_file(dirname(__FILE__).'/../asset/foto/'.$data['foto_thumb']) ? unlink(dirname(__FILE__).'/../asset/foto/'.$data['foto_thumb']) : false;
 
-		$query = "update asset
+			$query = "update asset
 				set foto = '',
 				  foto_thumb = ''
 				where id = '$val'";
-
-		mysqli_query($con, $query) or die(mysqli_error($con));
+			
+			mysqli_query($con, $query)  or die(mysql_error());	
+		}
 	}
-}
 
-function updateFile($productId, $fotoId, $title, $fotoName, $isPrimary)
-{
-	global $con;
-	$path = 'asset_' . $productId . '/' . $fotoName;
-	$pathThumb = 'asset_' . $productId . '/thumb/' . $fotoName;
+	function updateFile($productId,$fotoId,$title,$fotoName,$isPrimary) {
+		$path = 'asset_'.$productId.'/'.$fotoName;
+		$pathThumb = 'asset_'.$productId.'/thumb/'.$fotoName;
 
-	$query = "update asset
+		$query = "update asset
 			set foto = '$path',
 			  foto_thumb = '$pathThumb'
 			where id = '$productId'";
+			
+		mysqli_query($con, $query)  or die(mysql_error());		
+	}	
 
-	mysqli_query($con, $query) or die(mysqli_error($con));
-}
+	function uploadFile($file,$index,$productId) {
+		$pathDestination = dirname(__FILE__).'/../asset/foto/';
 
-function uploadFile($file, $index, $productId)
-{
-	$pathDestination = dirname(__FILE__) . '/../asset/foto/';
-
-	$tmp = explode('.', $file['name']);
-	$ext = $tmp[count($tmp) - 1];
+		$tmp = explode('.',$file['name']);		
+		$ext = $tmp[count($tmp)-1];
 
 
-	$pathDestinationFolder = $pathDestination . 'asset_' . $productId;
-	$fotoName = 'foto' . $index . '.' . $ext;
+		$pathDestinationFolder = $pathDestination.'asset_'.$productId;
+		$fotoName = 'foto'.$index.'.'.$ext;
 
-	is_dir($pathDestinationFolder) != true ? mkdir($pathDestinationFolder, 0775) : false;
-	move_uploaded_file($file['tmp_name'], $pathDestinationFolder . '/' . $fotoName);
+		is_dir($pathDestinationFolder) != true ? mkdir($pathDestinationFolder, 0775) : false;
+		move_uploaded_file($file['tmp_name'], $pathDestinationFolder.'/'.$fotoName);
 
-	$pathDestinationFolderThumb = $pathDestinationFolder . '/thumb';
-	is_dir($pathDestinationFolderThumb) != true ? mkdir($pathDestinationFolderThumb, 0775) : false;
+		$pathDestinationFolderThumb = $pathDestinationFolder.'/thumb';
+		is_dir($pathDestinationFolderThumb) != true ? mkdir($pathDestinationFolderThumb, 0775) : false;
 
-	//thumbnail::create($pathDestinationFolder.'/'.$fotoName, $pathDestinationFolder.'/'.$fotoName,600);
-	thumbnail::create($pathDestinationFolder . '/' . $fotoName, $pathDestinationFolderThumb . '/' . $fotoName, 200);
+		//thumbnail::create($pathDestinationFolder.'/'.$fotoName, $pathDestinationFolder.'/'.$fotoName,600);
+		thumbnail::create($pathDestinationFolder.'/'.$fotoName, $pathDestinationFolderThumb.'/'.$fotoName,200);
 
-	return $fotoName;
-}
+		return $fotoName;
+	}
 
-include '../../lib/connection-close.php';
+	include '../../lib/connection-close.php';
 
-header('Location:index.php?msg=addSuccess');
+	header('Location:index.php?msg=addSuccess');
 ?>

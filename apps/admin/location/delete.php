@@ -10,7 +10,7 @@
 		  set is_delete = '1'
 		where id='$id'";
 
-	mysql_query($query) or die(mysql_error());
+	mysqli_query($con, $query)  or die(mysql_error());
 
 	include '../../lib/connection-close.php';
 
